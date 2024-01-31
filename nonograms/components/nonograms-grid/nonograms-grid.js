@@ -94,19 +94,17 @@ export function createNonogramTable(dif) {
   const nonogramObj = countGroups(nonogram);
   const gridHeader = document.createElement('tr');
   gridHeader.className = 'tb__header';
-  // adding empty slot, for correct visability
+  // добавление пустой ячейки для правильной видимости
   const emptySlot = document.createElement('td');
   emptySlot.className = 'header__empty';
   gridHeader.appendChild(emptySlot);
   for (let index = 0; index < nonogramObj.columns.length; index++) {
     const element = document.createElement('td');
-    const content = nonogramObj.columns[index].join('');
-    element.className = `tb__header__col-${index + 1}`;
-    element.textContent = content;
+    element.className = 'tb__header__col';
+    element.textContent = nonogramObj.columns[index].join('\n');
     gridHeader.appendChild(element);
   }
   nonogramGrid.appendChild(gridHeader);
-  // fixing problem
   for (let index = 0; index < nonogramObj.rows.length; index++) {
     const row = document.createElement('tr');
     row.className = 'td__content';
@@ -117,10 +115,13 @@ export function createNonogramTable(dif) {
     firstColumn.id = `row-${index + 1}`;
     firstColumn.textContent = content;
     row.appendChild(firstColumn);
-    for (let index1 = 0; index1 < nonogramObj.columns.length;
-      index1++) {
+    for (let index1 = 0; index1 < nonogramObj.columns.length; index1++) {
       const element = document.createElement('td');
       element.className = 'td__cell';
+      const content = nonogram[index][index1];
+      if (content === 1) {
+        element.classList.add('td__cell__filled');
+      }
       row.appendChild(element);
     }
     nonogramGrid.appendChild(row);
