@@ -110,7 +110,7 @@ export function createNonogramTable(dif) {
     row.className = 'td__content';
     row.id = `row-${index + 1}`;
     const firstColumn = document.createElement('td');
-    const content = nonogramObj.rows[index].join('');
+    const content = nonogramObj.rows[index].join(' ');
     firstColumn.className = 'td__first__col';
     firstColumn.id = `row-${index + 1}`;
     firstColumn.textContent = content;
@@ -126,5 +126,27 @@ export function createNonogramTable(dif) {
     }
     nonogramGrid.appendChild(row);
   }
+  const cells = nonogramGrid.querySelectorAll('.td__cell');
+  const filledCells = nonogramGrid.querySelectorAll('.td__cell__filled');
+  let clickedCount = 0;
+  cells.forEach((cell) => {
+    cell.addEventListener('click', function () {
+      this.classList.toggle('clicked');
+    });
+  });
+  filledCells.forEach((filledCell) => {
+    filledCell.addEventListener('click', function () {
+      if (this.classList.contains('clicked')) {
+        clickedCount++;
+        console.log(clickedCount);
+        if (clickedCount === filledCells.length) {
+          console.log('Nonogram complited');
+        }
+      } else {
+        clickedCount--;
+        console.log(clickedCount);
+      }
+    });
+  });
   return nonogramGrid;
 }

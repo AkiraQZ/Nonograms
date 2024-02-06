@@ -1,6 +1,11 @@
 import { createNonogramTable }
 from "/components/nonograms-grid/nonograms-grid.js";
 
+const app = document.createElement('div');
+app.id = 'app';
+
 const body = document.querySelector('body');
 const nonogramGrid = createNonogramTable('hard');
-body.appendChild(nonogramGrid);
+
+app.appendChild(nonogramGrid);
+body.appendChild(app);
