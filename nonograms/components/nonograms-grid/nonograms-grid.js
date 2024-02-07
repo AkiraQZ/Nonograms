@@ -128,10 +128,26 @@ export function createNonogramTable(dif) {
   }
   const cells = nonogramGrid.querySelectorAll('.td__cell');
   const filledCells = nonogramGrid.querySelectorAll('.td__cell__filled');
+  const cross = document.createElement('div');
+  cross.className = 'cross';
   let clickedCount = 0;
   cells.forEach((cell) => {
     cell.addEventListener('click', function () {
       this.classList.toggle('clicked');
+      if (cell.childElementCount > 0) {
+        cell.removeChild(cross);
+      }
+    });
+  });
+  cells.forEach((cell) => {
+    cell.addEventListener('contextmenu', (event) => {
+      event.preventDefault();
+      cell.classList.remove('clicked');
+      if (cell.childElementCount > 0) {
+        cell.removeChild(cross);
+      } else {
+        cell.appendChild(cross);
+      }
     });
   });
   filledCells.forEach((filledCell) => {
@@ -148,5 +164,15 @@ export function createNonogramTable(dif) {
       }
     });
   });
+  filledCells.forEach((filledCell) => {
+    filledCell.addEventListener('contextmenu', (event) => {
+      event.preventDefault();
+      if (!filledCell.classList.contains('clicked')
+      && filledCell.childElementCount > 0) {
+        clickedCount--;
+        console.log(clickedCount);
+      }
+    });
+});
   return nonogramGrid;
 }
