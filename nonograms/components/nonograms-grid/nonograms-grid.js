@@ -19,13 +19,14 @@ function getRandomInt(min, max) {
 }
 
 export function resetNonogram() {
-  const cells = document.querySelectorAll('.nonogram-table .td__content .td__cell');
+  const cells = document
+    .querySelectorAll('.nonogram-table .td__content .td__cell');
   cells.forEach((cell) => {
     if (cell.classList.contains('clicked')) {
       cell.classList.remove('clicked');
     }
     if (cell.childElementCount > 0) {
-      cell.removeChild(cross);
+      cell.removeChild(cell.firstChild);
     }
   });
   clickedCount = 0;
@@ -36,6 +37,7 @@ export function clearNonogram() {
     .querySelectorAll('.nonogram-table .td__content .td__cell');
   const app = document.querySelector('#app');
   const table = document.querySelector('#app .nonogram-table');
+  const cross = document.querySelector('.cross');
   app.removeChild(table);
   clickedCount = 0;
   cells.forEach((cell) => {
@@ -43,7 +45,7 @@ export function clearNonogram() {
       cell.classList.remove('clicked');
     }
     if (cell.childElementCount > 0) {
-      cell.removeChild(cross);
+      cell.removeChild(cell.firstChild);
     }
   });
 }
@@ -163,12 +165,13 @@ export function createNonogramTable(dif) {
   }
   const cells = nonogramGrid.querySelectorAll('.td__cell');
   const filledCells = nonogramGrid.querySelectorAll('.td__cell__filled');
+  const cross = document.createElement('div');
   cross.className = 'cross';
   cells.forEach((cell) => {
     cell.addEventListener('click', function () {
       this.classList.toggle('clicked');
       if (cell.childElementCount > 0) {
-        cell.removeChild(cross);
+        cell.removeChild(cell.firstChild);
       }
     });
   });
@@ -176,9 +179,11 @@ export function createNonogramTable(dif) {
     cell.addEventListener('contextmenu', (event) => {
       event.preventDefault();
       cell.classList.remove('clicked');
-      if (cell.childElementCount > 0) {
-        cell.removeChild(cross);
+      if (cell.childNodes.length > 0) {
+        cell.removeChild(cell.firstChild);
       } else {
+        const cross = document.createElement('div');
+        cross.className = 'cross';
         cell.appendChild(cross);
       }
     });
