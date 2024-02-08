@@ -1,3 +1,4 @@
+/* eslint-disable no-shadow */
 /* eslint-disable import/prefer-default-export */
 /* eslint-disable no-plusplus */
 import {
@@ -6,11 +7,45 @@ import {
   hardNonograms,
 } from '../nonograms-base/nonograms-base';
 
+let clickedCount = 0;
+const cross = document.createElement('div');
+const app = document.querySelector('#app');
+
 // randomize what template we get
 function getRandomInt(min, max) {
   min = Math.ceil(min);
   max = Math.floor(max);
   return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+export function resetNonogram() {
+  const cells = document.querySelectorAll('.nonogram-table .td__content .td__cell');
+  cells.forEach((cell) => {
+    if (cell.classList.contains('clicked')) {
+      cell.classList.remove('clicked');
+    }
+    if (cell.childElementCount > 0) {
+      cell.removeChild(cross);
+    }
+  });
+  clickedCount = 0;
+}
+
+export function clearNonogram() {
+  const cells = document
+    .querySelectorAll('.nonogram-table .td__content .td__cell');
+  const app = document.querySelector('#app');
+  const table = document.querySelector('#app .nonogram-table');
+  app.removeChild(table);
+  clickedCount = 0;
+  cells.forEach((cell) => {
+    if (cell.classList.contains('clicked')) {
+      cell.classList.remove('clicked');
+    }
+    if (cell.childElementCount > 0) {
+      cell.removeChild(cross);
+    }
+  });
 }
 
 // counting ones for create nonograms first column and row
@@ -128,9 +163,7 @@ export function createNonogramTable(dif) {
   }
   const cells = nonogramGrid.querySelectorAll('.td__cell');
   const filledCells = nonogramGrid.querySelectorAll('.td__cell__filled');
-  const cross = document.createElement('div');
   cross.className = 'cross';
-  let clickedCount = 0;
   cells.forEach((cell) => {
     cell.addEventListener('click', function () {
       this.classList.toggle('clicked');
@@ -173,6 +206,6 @@ export function createNonogramTable(dif) {
         console.log(clickedCount);
       }
     });
-});
+  });
   return nonogramGrid;
 }
